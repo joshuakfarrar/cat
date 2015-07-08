@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 
 int printStdin(int argc, char *argv[]) {
     int ch;
@@ -17,16 +18,16 @@ int printStdin(int argc, char *argv[]) {
 void cat(int fd) {
     struct stat sbuf;
     char *buffer;
-    blksize_t bsize;
-    ssize_t nr;
 
     fstat(fd, &sbuf);
-    bsize = sbuf.st_blksize;
-    buffer = malloc(bsize);
 
-    while((nr = read(fd, buffer, bsize)) > 0) {
-        fprintf(stdout, "%s", buffer);
+    buffer = mmap(NULL, sbuf.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    if (buffer == MAP_FAILED) {
+        printf("derp\n");
+        exit(2);
     }
+
+    fwrite(buffer, sizeof(char), sbuf.st_size, stdout);
 
     return;
 }

@@ -49,3 +49,31 @@ real    0m0.370s
 user    0m0.068s
 sys 0m0.300s
 ```
+
+v0.4.0 (pretty sure i broke physics)
+
+> **Uses mmap to map file directly to memory and fwrites it to stdout**
+
+```sh
+$ time ./cat ~/test.txt &>/dev/null
+
+real    0m0.001s
+user    0m0.000s
+sys 0m0.000s
+```
+
+Just to be sure on this version, because the numbers when piping to /dev/null don't make sense, these are the numbers when piping to a file:
+
+```sh
+$ time ./cat ~/test.txt 1>test.txt
+
+real    0m4.533s
+user    0m0.000s
+sys 0m1.088s
+
+$ time cat ~/test.txt 1>test.txt
+
+real    0m4.738s
+user    0m0.000s
+sys 0m1.144s
+```
