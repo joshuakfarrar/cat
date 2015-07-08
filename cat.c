@@ -1,6 +1,8 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int printStdin(int argc, char *argv[]) {
     int ch;
@@ -22,23 +24,35 @@ int getFileLength(FILE *fp) {
     return length;
 }
 
+void cat(int fd) {
+    struct stat sbuf;
+    char *buffer;
+    blksize_t bsize;
+    ssize_t nr;
+
+    fstat(fd, &sbuf);
+    bsize = sbuf.st_blksize;
+    buffer = malloc(bsize);
+
+    while((nr = read(fd, buffer, bsize)) > 0) {
+        fprintf(stdout, "%s", buffer);
+    }
+
+    return;
+}
+
 int catFiles(int argc, char *argv[]) {
     int i;
-    FILE *fp;
-    int length;
-    char *buffer;
+    int fd;
 
     for (i = 1; i < argc; i++) {
-        fp = fopen(argv[i], "r");
-        if (fp == NULL) {
+        fd = open(argv[i], O_RDONLY);
+        if (fd < 0) {
             fprintf(stderr, "%s: %s: No such file or directory\n", argv[0], argv[i]);
             exit(1);
         } else {
-            length = getFileLength(fp);
-            buffer = malloc(sizeof(char) * (length + 1));
-            fread(buffer, sizeof(char), length, fp);
-            fprintf(stdout, "%s", buffer);
-            fclose(fp);
+            cat(fd);
+            close(fd);
         }
     }
 
