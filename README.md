@@ -77,3 +77,19 @@ real    0m4.738s
 user    0m0.000s
 sys 0m1.144s
 ```
+
+Also...
+
+```sh
+$ time ./cat ~/test.txt | wc -l 1>/dev/null
+
+real    0m1.287s
+user    0m0.468s
+sys 0m0.812s
+
+time cat ~/test.txt | wc -l 1>/dev/null
+
+real    0m1.432s
+user    0m0.484s
+sys 0m0.944s
+```
