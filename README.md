@@ -3,11 +3,11 @@
 ###### Time to beat:
 
 ```sh
-$ time cat test.txt &>/dev/null
+$ time cat ~/test.txt &>/dev/null
 
-real    0m2.163s
-user    0m0.012s
-sys 0m0.392s
+real    0m1.032s
+user    0m0.000s
+sys 0m0.312s
 ```
 
 ###### My times
@@ -31,7 +31,7 @@ v0.2.0
 ```sh
 $ time ./cat ~/test.txt &>/dev/null
 
-real    0m3.117s
-user    0m0.172s
-sys 0m1.080s
+real    0m1.267s
+user    0m0.156s
+sys 0m0.780s
 ```
