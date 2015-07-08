@@ -28,7 +28,6 @@ void cat(int fd) {
         printf("derp\n");
         exit(2);
     }
-
     fwrite(buffer, sizeof(char), length, stdout);
 
     munmap(buffer, length);
