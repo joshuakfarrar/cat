@@ -18,16 +18,20 @@ int printStdin(int argc, char *argv[]) {
 void cat(int fd) {
     struct stat sbuf;
     char *buffer;
+    size_t length;
 
     fstat(fd, &sbuf);
+    length = sbuf.st_size;
 
-    buffer = mmap(NULL, sbuf.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    buffer = mmap(NULL, length, PROT_READ, MAP_PRIVATE, fd, 0);
     if (buffer == MAP_FAILED) {
         printf("derp\n");
         exit(2);
     }
 
-    fwrite(buffer, sizeof(char), sbuf.st_size, stdout);
+    fwrite(buffer, sizeof(char), length, stdout);
+
+    munmap(buffer, length);
 
     return;
 }
