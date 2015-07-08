@@ -14,16 +14,6 @@ int printStdin(int argc, char *argv[]) {
     return 0;
 }
 
-int getFileLength(FILE *fp) {
-    int length;
-
-    fseek(fp, 0L, SEEK_END);
-    length = ftell(fp);
-    fseek(fp, 0L, SEEK_SET);
-
-    return length;
-}
-
 void cat(int fd) {
     struct stat sbuf;
     char *buffer;
